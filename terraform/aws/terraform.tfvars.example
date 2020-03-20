@@ -1,6 +1,7 @@
 # Module Configuration Variables
-region  = "eu-west-2"
-owner   = "lancehaig"
+primary_region  = "eu-west-2"
+secondary_region  = "eu-west-1"
+owner   = "guybarros"
 created-by = "Terraform CLI"
 public_key = ""
 clusterid = "guy-consul"
@@ -9,9 +10,10 @@ server_number = "3"
 server_instance_type = "t2.medium"
 worker_number = "3"
 worker_instance_type = "t2.medium"
-datacenter = "dc1"
+primary_datacenter = "dc1"
+secondary_datacenter = "dc2"
 # General Variables
-consul_url = "https://releases.hashicorp.com/consul/0.10.2-rc1/consul_0.10.2-rc1_linux_amd64.zip"
+consul_url = "https://releases.hashicorp.com/consul/1.7.2/consul_1.7.2_linux_amd64.zip"
 vpc_cidr_block = "10.1.0.0/16"
 cidr_blocks = ["10.1.1.0/24", "10.1.2.0/24"]
 consul_join = "consul_join"

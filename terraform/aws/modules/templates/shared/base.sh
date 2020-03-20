@@ -47,7 +47,6 @@ curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 echo "--> Installing common dependencies"
 ssh-apt install \
   ansible \
-  mongodb-server \
   nodejs \
   unzip
 

@@ -3,7 +3,10 @@ data "template_file" "server" {
   template = "${join("\n", list(
     file("${path.root}/modules/templates/shared/base.sh"),
     file("${path.root}/modules/templates/servers/consul.sh"),
-    file("${path.root}/modules/templates/consul_templates/consul_configs.sh")
+    file("${path.root}/modules/templates/consul_templates/consul_configs.sh"),
+    file("${path.root}/modules/templates/consul_templates/federate_consul.sh"),
+    file("${path.root}/modules/templates/consul_templates/mongodb.sh"),
+    file("${path.root}/modules/templates/consul_templates/nodejs.sh"),
   ))}"
   vars = {
     region    = "${var.region}"

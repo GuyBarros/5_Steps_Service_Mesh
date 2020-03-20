@@ -28,6 +28,6 @@ output "Secondary_Servers_SSH" {
   value = module.seconday_cluster.servers
 }
 
-output "Workers_SSH" {
+output "Secondary_Workers_SSH" {
   value = module.seconday_cluster.workers
 }
