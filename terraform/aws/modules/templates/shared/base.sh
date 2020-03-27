@@ -48,7 +48,8 @@ echo "--> Installing common dependencies"
 ssh-apt install \
   ansible \
   nodejs \
-  unzip
+  unzip \
+  openjdk-9-jdk-headless
 
 echo "--> creating mongodb data dir"
 mkdir -p /data/db/
