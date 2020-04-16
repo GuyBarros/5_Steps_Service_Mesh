@@ -14,7 +14,7 @@ module "primary_cluster" {
   region               = var.primary_region
   datacenter           = "${var.primary_datacenter}-${var.primary_region}"
   primary_datacenter   = "${var.primary_datacenter}-${var.primary_region}"
-  host_access_ip       = var.host_access_ip
+  host_access_ip       = local.host_access_ip
   consul_join           = var.consul_join
   consul_url            = var.consul_url
   owner                = var.owner
@@ -33,7 +33,7 @@ module "seconday_cluster" {
   created-by           = var.created-by
   datacenter           = "${var.secondary_datacenter}-${var.secondary_region}"
   primary_datacenter   = "${var.primary_datacenter}-${var.primary_region}"
-  host_access_ip       = var.host_access_ip
+  host_access_ip       = local.host_access_ip
   consul_join           = var.consul_join
   consul_url            = var.consul_url
   owner                = var.owner

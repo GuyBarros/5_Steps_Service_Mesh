@@ -1,4 +1,13 @@
 # Module Configuration Variables
+data "http" "myipaddr" {
+    url = "http://ipv4.icanhazip.com"
+}
+
+locals {
+   host_access_ip = ["${chomp(data.http.myipaddr.body)}/32"]
+}
+
+
 variable "primary_region" {
   description = "The region to create your resources in."
   default     = "eu-west-2"
@@ -27,10 +36,6 @@ variable "clusterid" {
   default     = "dev-consul"
 }
 
-variable "host_access_ip" {
-  description = "CIDR blocks allowed to connect via SSH on port 22"
-  default     = []
-}
 
 variable "server_number" {
   description = "The number of servers for consul leaders."
