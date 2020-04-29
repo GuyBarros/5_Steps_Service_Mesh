@@ -14,7 +14,7 @@ sudo tee /mnt/consul/chatapp_noconnect.json.bkp > /dev/null <<EOF
       "id": "chat_port",
       "name": "chat port listening",
       "tcp": "localhost:5000",
-      "interval": "10s",
+      "interval": "5s",
       "timeout": "1s"
     }
   }
@@ -47,7 +47,45 @@ sudo tee /mnt/consul/chatapp_connect.json.bkp > /dev/null <<EOF
       "id": "chat_port",
       "name": "chat port listening",
       "tcp": "localhost:5000",
-      "interval": "10s",
+      "interval": "5s",
+      "timeout": "1s"
+    }
+  }
+}
+EOF
+
+echo "==> Create Second ChatApp connect service definition"
+sudo tee /mnt/consul/second_chatapp_connect.json.bkp > /dev/null <<EOF
+{
+  
+  "service": {
+    "name": "chat",
+    "port": 5000,
+    "connect": {
+      "sidecar_service": {
+        "tags": [
+          "chatapp-proxy"
+        ],
+        "proxy": {
+            "mesh_gateway": {
+            "mode" : "local"
+        },
+          "upstreams": [
+            {
+              "destination_name": "mongodb",
+              "datacenter": "dc1-eu-west-2",
+              "local_bind_port": 8888
+            }
+          ]
+        }
+      }
+    },
+    "tags": [ "chat_with_connect"],
+    "check": {
+      "id": "chat_port",
+      "name": "chat port listening",
+      "tcp": "localhost:5000",
+      "interval": "5s",
       "timeout": "1s"
     }
   }

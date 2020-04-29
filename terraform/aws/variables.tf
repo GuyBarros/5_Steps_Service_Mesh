@@ -5,6 +5,7 @@ data "http" "myipaddr" {
 
 locals {
    host_access_ip = ["${chomp(data.http.myipaddr.body)}/32"]
+   // host_access_ip = ["<AN IP>/32"]
 }
 
 

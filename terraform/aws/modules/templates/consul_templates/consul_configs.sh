@@ -1,28 +1,25 @@
 
 echo "==> Create Proxy defaults so that all services use gateway"
-sudo tee /mnt/consul/proxy-defaults.json > /dev/null <<EOF
-{
-    "Kind": "proxy-defaults",
-    "Name": "global",
-"MeshGateway" : {
-  "mode" : "local"
-}
+sudo tee /mnt/consul/proxy-defaults.hcl.bkp > /dev/null <<EOF
+Kind = "proxy-defaults"
+Name = "global"
+MeshGateway = {
+  mode = "local"
 }
 EOF
 
 
 echo "==> Create Service defaults to make MongoDB use a gateway"
-sudo tee /mnt/consul/mongodb.hcl > /dev/null <<EOF
+sudo tee /mnt/consul/mongodb.hcl.bkp > /dev/null <<EOF
 Kind = "service-defaults"
 Name = "mongodb"
-Protocol = "http"
 MeshGateway = {
   mode = "local"
 }
 EOF
 
 echo "==> Create a Service Router to route Mongodb from DC2 to DC1"
-sudo tee /mnt/consul/mongodb-resolver.hcl > /dev/null <<EOF
+sudo tee /mnt/consul/mongodb-resolver.hcl.bkp > /dev/null <<EOF
 kind = "service-resolver"
 name = "mongodb"
 redirect {
@@ -33,6 +30,9 @@ EOF
 
 echo "==> Create a script to apply Consul reloadble configuration"
 sudo tee /mnt/consul/consul_config_scrips.sh > /dev/null <<EOF
+sudo cp  proxy-defaults.json.bkp proxy-defaults.json
+sudo cp mongodb.hcl.bkp mongodb.hcl
+sudo cp mongodb-resolver.hcl.bkp mongodb-resolver.hcl
 consul config write proxy-defaults.json
 consul config write mongodb.hcl
 consul config write mongodb-resolver.hcl
