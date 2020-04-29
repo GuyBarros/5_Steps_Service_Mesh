@@ -30,10 +30,10 @@ EOF
 
 echo "==> Create a script to apply Consul reloadble configuration"
 sudo tee /mnt/consul/consul_config_scrips.sh > /dev/null <<EOF
-sudo cp  proxy-defaults.json.bkp proxy-defaults.json
+sudo cp  proxy-defaults.hcl.bkp proxy-defaults.hcl
 sudo cp mongodb.hcl.bkp mongodb.hcl
 sudo cp mongodb-resolver.hcl.bkp mongodb-resolver.hcl
-consul config write proxy-defaults.json
+consul config write proxy-defaults.hcl
 consul config write mongodb.hcl
 consul config write mongodb-resolver.hcl
 EOF
