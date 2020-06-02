@@ -1,6 +1,6 @@
 # 5 Steps to Service Mesh
 
-This repository contains the terraform code that acompanies the session "[Service Mesh without Kubernetes](https://www.hashicorp.com/resources/service-mesh-without-kubernetes/)".
+This repository contains the terraform code that accompanies the session "[Service Mesh without Kubernetes](https://www.hashicorp.com/resources/service-mesh-without-kubernetes/)".
 
 Please note, this is for Consul 1.7.3 and below, I’ll soon(ish) create a branch using Consul 1.8.0 (it’s magnificent but changes some things slightly).
 
@@ -11,7 +11,7 @@ In a nutshell, these are the 5 steps that you need:
 ![Image](./assets/summary.jpg)
 
 
-## included enviroment
+## included environment
 
 In the [terraform/aws](./terraform/aws) directory there is code to spin up an environment with consul preconfigured. this takes a couple of minutes to get up and running correctly.
 
@@ -93,7 +93,7 @@ Secondary_Workers_UI = [
 
 ### Pre requisites
 
-There is a little bit of a set up that we need to be able to run this demo. namely, start mongodb and start the Chat application.
+There is a little bit of a set up that we need to be able to run this demo. namely, start Mongodb and start the Chat application.
 
 #### MongoDB
 
@@ -110,7 +110,7 @@ ubuntu@guy-consul-0663-wkr-0:~$ sudo sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongodb
 ubuntu@guy-consul-0663-wkr-0:~$ sudo systemctl restart mongodb
 
 ```
-thats it. we'll set up the Chatt application after we configure MongoDB in Consul so we can use the Service Discovery features of Consul.
+thats it. we'll set up the Chat application after we configure MongoDB in Consul so we can use the Service Discovery features of Consul.
 
 ---
 
@@ -145,11 +145,11 @@ In the Consul UI, check that both DCs are available from the drop down:
 
 Now we want to add our services to Consul. for this we will need to create a Service Definition. 
 
-Consul also allows the adition of Health Checks in the Service Definition. This gives us better visibility into our services.
+Consul also allows the addition of Health Checks in the Service Definition. This gives us better visibility into our services.
 
 #### MongoDB
 
-The MongoDB service defintion and Health check is the following:
+The MongoDB service definition and Health check is the following:
 ```json
 {
     "service": {
@@ -188,7 +188,7 @@ We can also click into this service and into the health check:
 
 #### Chat
 
-The Chat application service defintion and Health check is the following:
+The Chat application service definition and Health check is the following:
 ```json
 {
   "service": {
@@ -215,7 +215,7 @@ ubuntu@guy-consul-0663-wkr-1:/mnt/consul$ consul services register chat.json
 Registered service: chat
 ```
 
-Now, if we look into the Consul Web UI, we can see that the service is there but its failing its healthcheck.
+Now, if we look into the Consul Web UI, we can see that the service is there but its failing its health check.
 
 ![Image](./assets/chat_service_failing.jpg)
 
@@ -223,7 +223,7 @@ We can also click into this service and into the health check:
 ![Image](./assets/chat_healthcheck_failing.jpg)
 
 
-The service is failing because we arent running the chat application yet.
+The service is failing because we aren't running the chat application yet.
 
  Now we will use the service discovery capabilities of Consul to help the chat application find the MongoDB instance using the DNS interface.
  
@@ -254,13 +254,13 @@ We can also now access the check application using port 5000 to see it working:
 
 ## Step 3 - Consul Connect Sidecar Proxies
 
-Instead of using Consul to discover where mongodb is running, we will use Consul to make this connection for us. 
+Instead of using Consul to discover where Mongodb is running, we will use Consul to make this connection for us. 
 
 We will need to amend the service definition for MongoDB and the Chatapp to use the new proxies and we will also need to start the proxies themselves in each of the machines. 
 
 #### MongoDB
 
-The MongoDB service defintion and Health check is the following:
+The MongoDB service definition and Health check is the following:
 
 ```json
 {
@@ -297,7 +297,7 @@ We can see a new service called mongodb-sidecar-proxy in the Consul web UI:
 
 ![Image](./assets/mongodb_proxy_failing.png)
 
-This service is failing because we havent started the proxy itself yet.
+This service is failing because we haven't started the proxy itself yet.
 
 To start this proxy we would need to run the *consul connect envoy -sidecar-for <SERVICE>* command, which again has been provided in ease to consume script form:
 
@@ -316,7 +316,7 @@ This service is now healthy in the Consul Web UI
 
 #### Chat
 
-the Chat application service defintion is a little bit different because we need to specify what upstream system we want to use consul connect to erm connect to.
+the Chat application service definition is a little bit different because we need to specify what upstream system we want to use consul connect to erm connect to.
 
 To make our lives a bit easier, we will also specify which local port we want the consul connect envoy proxy to listen on.
 
@@ -371,7 +371,7 @@ nohup: ignoring input and appending output to 'nohup.out'
 ubuntu@guy-consul-0663-wkr-1:~$ 
 ```
 
-While both services are running, we arent yet using the new proxy for the connection(when we started the chatapp, we set the Mongodb host to mongodb.service.consul).
+While both services are running, we aren't yet using the new proxy for the connection(when we started the chatapp, we set the Mongodb host to mongodb.service.consul).
 
 We now have to restart the application to use the new consul connect proxy.
 
@@ -397,7 +397,7 @@ We are now ready to add another datacenter to the mix.
 ---
 ## Step 4 - Gateways and default service definitions
 
-To make our services talk across federated datacenters, we will start a special tipe of service called a gateway to handle this connection. 
+To make our services talk across federated datacenters, we will start a special type of service called a gateway to handle this connection. 
 
 consul connect envoy  -mesh-gateway -register  -service "gateway" -address "$(private_ip):8700" -wan-address "$(public_ip):8700" -admin-bind "127.0.0.1:19007"
 
@@ -459,7 +459,7 @@ In the next section we will add the chatapp and a service router for MongoDB in 
 
  Now it is time to start adding services to DC2. we will start by adding a Service router for MongoDB which will use the gateways to redirect any requests from the local DC to DC1.
  
- This makes it so we dont have to deploy MongoDB in Datacenter2 and the chatapp can just use the data from Datacenter1.
+ This makes it so we don't have to deploy MongoDB in Datacenter2 and the chatapp can just use the data from Datacenter1.
 
  ```hcl
 kind = "service-resolver"
@@ -501,7 +501,7 @@ Done!
 
 While this is a real simple and manual example, it does help to understand how consul abstracts the complexity of interconnecting multiple Datacenters and Services (aka Service Mesh).
 
-The good thing about this example is that it can be used as a test enviroment and reapplied in different context.
+The good thing about this example is that it can be used as a test environment and reapplied in different context.
 
 To do this in a repeatable fashion, I would just use [Nomad](https://www.nomadproject.io/). since we can have native linux services and it can automatically create the sidecar proxies for you. (and it integrates nicely with Consul and Vault as well)
 
